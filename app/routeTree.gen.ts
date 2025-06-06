@@ -8,16 +8,50 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AuthImport } from './routes/auth'
+import { Route as CoreRouteImport } from './routes/core/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as PostsIndexImport } from './routes/posts.index'
 import { Route as StoreSplatImport } from './routes/store/$'
 import { Route as PostsPostIdImport } from './routes/posts.$postId'
+import { Route as CoreSettingsImport } from './routes/core/settings'
+import { Route as CoreDashboardImport } from './routes/core/dashboard'
+import { Route as AuthSignUpImport } from './routes/auth.sign-up'
+import { Route as AuthSignInImport } from './routes/auth.sign-in'
+import { Route as pathlessMainImport } from './routes/(pathless)/_main'
+import { Route as UsersUserIdRouteImport } from './routes/users/$userId/route'
+import { Route as PostIdPostsIndexImport } from './routes/$postId/_posts/index'
 import { Route as StoreProductsSplatImport } from './routes/store/products/$'
+import { Route as pathlessMainFeature2Import } from './routes/(pathless)/_main.feature2'
+import { Route as pathlessMainFeature1Import } from './routes/(pathless)/_main.feature1'
+
+// Create Virtual Routes
+
+const pathlessImport = createFileRoute('/(pathless)')()
 
 // Create/Update Routes
+
+const pathlessRoute = pathlessImport.update({
+  id: '/(pathless)',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthRoute = AuthImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CoreRouteRoute = CoreRouteImport.update({
+  id: '/core',
+  path: '/core',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -43,10 +77,63 @@ const PostsPostIdRoute = PostsPostIdImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const CoreSettingsRoute = CoreSettingsImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => CoreRouteRoute,
+} as any)
+
+const CoreDashboardRoute = CoreDashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => CoreRouteRoute,
+} as any)
+
+const AuthSignUpRoute = AuthSignUpImport.update({
+  id: '/sign-up',
+  path: '/sign-up',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthSignInRoute = AuthSignInImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const pathlessMainRoute = pathlessMainImport.update({
+  id: '/_main',
+  getParentRoute: () => pathlessRoute,
+} as any)
+
+const UsersUserIdRouteRoute = UsersUserIdRouteImport.update({
+  id: '/users/$userId',
+  path: '/users/$userId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PostIdPostsIndexRoute = PostIdPostsIndexImport.update({
+  id: '/$postId/_posts/',
+  path: '/$postId/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const StoreProductsSplatRoute = StoreProductsSplatImport.update({
   id: '/store/products/$',
   path: '/store/products/$',
   getParentRoute: () => rootRoute,
+} as any)
+
+const pathlessMainFeature2Route = pathlessMainFeature2Import.update({
+  id: '/feature2',
+  path: '/feature2',
+  getParentRoute: () => pathlessMainRoute,
+} as any)
+
+const pathlessMainFeature1Route = pathlessMainFeature1Import.update({
+  id: '/feature1',
+  path: '/feature1',
+  getParentRoute: () => pathlessMainRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -59,6 +146,69 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
+    }
+    '/core': {
+      id: '/core'
+      path: '/core'
+      fullPath: '/core'
+      preLoaderRoute: typeof CoreRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/users/$userId': {
+      id: '/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/users/$userId'
+      preLoaderRoute: typeof UsersUserIdRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/(pathless)': {
+      id: '/(pathless)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof pathlessImport
+      parentRoute: typeof rootRoute
+    }
+    '/(pathless)/_main': {
+      id: '/(pathless)/_main'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof pathlessMainImport
+      parentRoute: typeof pathlessRoute
+    }
+    '/auth/sign-in': {
+      id: '/auth/sign-in'
+      path: '/sign-in'
+      fullPath: '/auth/sign-in'
+      preLoaderRoute: typeof AuthSignInImport
+      parentRoute: typeof AuthImport
+    }
+    '/auth/sign-up': {
+      id: '/auth/sign-up'
+      path: '/sign-up'
+      fullPath: '/auth/sign-up'
+      preLoaderRoute: typeof AuthSignUpImport
+      parentRoute: typeof AuthImport
+    }
+    '/core/dashboard': {
+      id: '/core/dashboard'
+      path: '/dashboard'
+      fullPath: '/core/dashboard'
+      preLoaderRoute: typeof CoreDashboardImport
+      parentRoute: typeof CoreRouteImport
+    }
+    '/core/settings': {
+      id: '/core/settings'
+      path: '/settings'
+      fullPath: '/core/settings'
+      preLoaderRoute: typeof CoreSettingsImport
+      parentRoute: typeof CoreRouteImport
     }
     '/posts/$postId': {
       id: '/posts/$postId'
@@ -81,6 +231,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/(pathless)/_main/feature1': {
+      id: '/(pathless)/_main/feature1'
+      path: '/feature1'
+      fullPath: '/feature1'
+      preLoaderRoute: typeof pathlessMainFeature1Import
+      parentRoute: typeof pathlessMainImport
+    }
+    '/(pathless)/_main/feature2': {
+      id: '/(pathless)/_main/feature2'
+      path: '/feature2'
+      fullPath: '/feature2'
+      preLoaderRoute: typeof pathlessMainFeature2Import
+      parentRoute: typeof pathlessMainImport
+    }
     '/store/products/$': {
       id: '/store/products/$'
       path: '/store/products/$'
@@ -88,70 +252,208 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoreProductsSplatImport
       parentRoute: typeof rootRoute
     }
+    '/$postId/_posts/': {
+      id: '/$postId/_posts/'
+      path: '/$postId'
+      fullPath: '/$postId'
+      preLoaderRoute: typeof PostIdPostsIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
+interface CoreRouteRouteChildren {
+  CoreDashboardRoute: typeof CoreDashboardRoute
+  CoreSettingsRoute: typeof CoreSettingsRoute
+}
+
+const CoreRouteRouteChildren: CoreRouteRouteChildren = {
+  CoreDashboardRoute: CoreDashboardRoute,
+  CoreSettingsRoute: CoreSettingsRoute,
+}
+
+const CoreRouteRouteWithChildren = CoreRouteRoute._addFileChildren(
+  CoreRouteRouteChildren,
+)
+
+interface AuthRouteChildren {
+  AuthSignInRoute: typeof AuthSignInRoute
+  AuthSignUpRoute: typeof AuthSignUpRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthSignInRoute: AuthSignInRoute,
+  AuthSignUpRoute: AuthSignUpRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+interface pathlessMainRouteChildren {
+  pathlessMainFeature1Route: typeof pathlessMainFeature1Route
+  pathlessMainFeature2Route: typeof pathlessMainFeature2Route
+}
+
+const pathlessMainRouteChildren: pathlessMainRouteChildren = {
+  pathlessMainFeature1Route: pathlessMainFeature1Route,
+  pathlessMainFeature2Route: pathlessMainFeature2Route,
+}
+
+const pathlessMainRouteWithChildren = pathlessMainRoute._addFileChildren(
+  pathlessMainRouteChildren,
+)
+
+interface pathlessRouteChildren {
+  pathlessMainRoute: typeof pathlessMainRouteWithChildren
+}
+
+const pathlessRouteChildren: pathlessRouteChildren = {
+  pathlessMainRoute: pathlessMainRouteWithChildren,
+}
+
+const pathlessRouteWithChildren = pathlessRoute._addFileChildren(
+  pathlessRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof pathlessMainRouteWithChildren
+  '/core': typeof CoreRouteRouteWithChildren
+  '/auth': typeof AuthRouteWithChildren
+  '/users/$userId': typeof UsersUserIdRouteRoute
+  '/auth/sign-in': typeof AuthSignInRoute
+  '/auth/sign-up': typeof AuthSignUpRoute
+  '/core/dashboard': typeof CoreDashboardRoute
+  '/core/settings': typeof CoreSettingsRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/store/$': typeof StoreSplatRoute
   '/posts': typeof PostsIndexRoute
+  '/feature1': typeof pathlessMainFeature1Route
+  '/feature2': typeof pathlessMainFeature2Route
   '/store/products/$': typeof StoreProductsSplatRoute
+  '/$postId': typeof PostIdPostsIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof pathlessMainRouteWithChildren
+  '/core': typeof CoreRouteRouteWithChildren
+  '/auth': typeof AuthRouteWithChildren
+  '/users/$userId': typeof UsersUserIdRouteRoute
+  '/auth/sign-in': typeof AuthSignInRoute
+  '/auth/sign-up': typeof AuthSignUpRoute
+  '/core/dashboard': typeof CoreDashboardRoute
+  '/core/settings': typeof CoreSettingsRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/store/$': typeof StoreSplatRoute
   '/posts': typeof PostsIndexRoute
+  '/feature1': typeof pathlessMainFeature1Route
+  '/feature2': typeof pathlessMainFeature2Route
   '/store/products/$': typeof StoreProductsSplatRoute
+  '/$postId': typeof PostIdPostsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/core': typeof CoreRouteRouteWithChildren
+  '/auth': typeof AuthRouteWithChildren
+  '/users/$userId': typeof UsersUserIdRouteRoute
+  '/(pathless)': typeof pathlessRouteWithChildren
+  '/(pathless)/_main': typeof pathlessMainRouteWithChildren
+  '/auth/sign-in': typeof AuthSignInRoute
+  '/auth/sign-up': typeof AuthSignUpRoute
+  '/core/dashboard': typeof CoreDashboardRoute
+  '/core/settings': typeof CoreSettingsRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/store/$': typeof StoreSplatRoute
   '/posts/': typeof PostsIndexRoute
+  '/(pathless)/_main/feature1': typeof pathlessMainFeature1Route
+  '/(pathless)/_main/feature2': typeof pathlessMainFeature2Route
   '/store/products/$': typeof StoreProductsSplatRoute
+  '/$postId/_posts/': typeof PostIdPostsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/core'
+    | '/auth'
+    | '/users/$userId'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/core/dashboard'
+    | '/core/settings'
     | '/posts/$postId'
     | '/store/$'
     | '/posts'
+    | '/feature1'
+    | '/feature2'
     | '/store/products/$'
+    | '/$postId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/posts/$postId' | '/store/$' | '/posts' | '/store/products/$'
+  to:
+    | '/'
+    | '/core'
+    | '/auth'
+    | '/users/$userId'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/core/dashboard'
+    | '/core/settings'
+    | '/posts/$postId'
+    | '/store/$'
+    | '/posts'
+    | '/feature1'
+    | '/feature2'
+    | '/store/products/$'
+    | '/$postId'
   id:
     | '__root__'
     | '/'
+    | '/core'
+    | '/auth'
+    | '/users/$userId'
+    | '/(pathless)'
+    | '/(pathless)/_main'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/core/dashboard'
+    | '/core/settings'
     | '/posts/$postId'
     | '/store/$'
     | '/posts/'
+    | '/(pathless)/_main/feature1'
+    | '/(pathless)/_main/feature2'
     | '/store/products/$'
+    | '/$postId/_posts/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CoreRouteRoute: typeof CoreRouteRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
+  UsersUserIdRouteRoute: typeof UsersUserIdRouteRoute
+  pathlessRoute: typeof pathlessRouteWithChildren
   PostsPostIdRoute: typeof PostsPostIdRoute
   StoreSplatRoute: typeof StoreSplatRoute
   PostsIndexRoute: typeof PostsIndexRoute
   StoreProductsSplatRoute: typeof StoreProductsSplatRoute
+  PostIdPostsIndexRoute: typeof PostIdPostsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CoreRouteRoute: CoreRouteRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
+  UsersUserIdRouteRoute: UsersUserIdRouteRoute,
+  pathlessRoute: pathlessRouteWithChildren,
   PostsPostIdRoute: PostsPostIdRoute,
   StoreSplatRoute: StoreSplatRoute,
   PostsIndexRoute: PostsIndexRoute,
   StoreProductsSplatRoute: StoreProductsSplatRoute,
+  PostIdPostsIndexRoute: PostIdPostsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -165,14 +467,66 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/core",
+        "/auth",
+        "/users/$userId",
+        "/(pathless)",
         "/posts/$postId",
         "/store/$",
         "/posts/",
-        "/store/products/$"
+        "/store/products/$",
+        "/$postId/_posts/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/core": {
+      "filePath": "core/route.tsx",
+      "children": [
+        "/core/dashboard",
+        "/core/settings"
+      ]
+    },
+    "/auth": {
+      "filePath": "auth.tsx",
+      "children": [
+        "/auth/sign-in",
+        "/auth/sign-up"
+      ]
+    },
+    "/users/$userId": {
+      "filePath": "users/$userId/route.tsx"
+    },
+    "/(pathless)": {
+      "filePath": "(pathless)",
+      "children": [
+        "/(pathless)/_main"
+      ]
+    },
+    "/(pathless)/_main": {
+      "filePath": "(pathless)/_main.tsx",
+      "parent": "/(pathless)",
+      "children": [
+        "/(pathless)/_main/feature1",
+        "/(pathless)/_main/feature2"
+      ]
+    },
+    "/auth/sign-in": {
+      "filePath": "auth.sign-in.tsx",
+      "parent": "/auth"
+    },
+    "/auth/sign-up": {
+      "filePath": "auth.sign-up.tsx",
+      "parent": "/auth"
+    },
+    "/core/dashboard": {
+      "filePath": "core/dashboard.tsx",
+      "parent": "/core"
+    },
+    "/core/settings": {
+      "filePath": "core/settings.tsx",
+      "parent": "/core"
     },
     "/posts/$postId": {
       "filePath": "posts.$postId.tsx"
@@ -183,8 +537,19 @@ export const routeTree = rootRoute
     "/posts/": {
       "filePath": "posts.index.tsx"
     },
+    "/(pathless)/_main/feature1": {
+      "filePath": "(pathless)/_main.feature1.tsx",
+      "parent": "/(pathless)/_main"
+    },
+    "/(pathless)/_main/feature2": {
+      "filePath": "(pathless)/_main.feature2.tsx",
+      "parent": "/(pathless)/_main"
+    },
     "/store/products/$": {
       "filePath": "store/products/$.tsx"
+    },
+    "/$postId/_posts/": {
+      "filePath": "$postId/_posts/index.tsx"
     }
   }
 }
