@@ -13,7 +13,9 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as PostsIndexImport } from './routes/posts.index'
+import { Route as StoreSplatImport } from './routes/store/$'
 import { Route as PostsPostIdImport } from './routes/posts.$postId'
+import { Route as StoreProductsSplatImport } from './routes/store/products/$'
 
 // Create/Update Routes
 
@@ -29,9 +31,21 @@ const PostsIndexRoute = PostsIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const StoreSplatRoute = StoreSplatImport.update({
+  id: '/store/$',
+  path: '/store/$',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const PostsPostIdRoute = PostsPostIdImport.update({
   id: '/posts/$postId',
   path: '/posts/$postId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const StoreProductsSplatRoute = StoreProductsSplatImport.update({
+  id: '/store/products/$',
+  path: '/store/products/$',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -53,11 +67,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsPostIdImport
       parentRoute: typeof rootRoute
     }
+    '/store/$': {
+      id: '/store/$'
+      path: '/store/$'
+      fullPath: '/store/$'
+      preLoaderRoute: typeof StoreSplatImport
+      parentRoute: typeof rootRoute
+    }
     '/posts/': {
       id: '/posts/'
       path: '/posts'
       fullPath: '/posts'
       preLoaderRoute: typeof PostsIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/store/products/$': {
+      id: '/store/products/$'
+      path: '/store/products/$'
+      fullPath: '/store/products/$'
+      preLoaderRoute: typeof StoreProductsSplatImport
       parentRoute: typeof rootRoute
     }
   }
@@ -68,41 +96,62 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/store/$': typeof StoreSplatRoute
   '/posts': typeof PostsIndexRoute
+  '/store/products/$': typeof StoreProductsSplatRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/store/$': typeof StoreSplatRoute
   '/posts': typeof PostsIndexRoute
+  '/store/products/$': typeof StoreProductsSplatRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/store/$': typeof StoreSplatRoute
   '/posts/': typeof PostsIndexRoute
+  '/store/products/$': typeof StoreProductsSplatRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/posts/$postId' | '/posts'
+  fullPaths:
+    | '/'
+    | '/posts/$postId'
+    | '/store/$'
+    | '/posts'
+    | '/store/products/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/posts/$postId' | '/posts'
-  id: '__root__' | '/' | '/posts/$postId' | '/posts/'
+  to: '/' | '/posts/$postId' | '/store/$' | '/posts' | '/store/products/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/posts/$postId'
+    | '/store/$'
+    | '/posts/'
+    | '/store/products/$'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PostsPostIdRoute: typeof PostsPostIdRoute
+  StoreSplatRoute: typeof StoreSplatRoute
   PostsIndexRoute: typeof PostsIndexRoute
+  StoreProductsSplatRoute: typeof StoreProductsSplatRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PostsPostIdRoute: PostsPostIdRoute,
+  StoreSplatRoute: StoreSplatRoute,
   PostsIndexRoute: PostsIndexRoute,
+  StoreProductsSplatRoute: StoreProductsSplatRoute,
 }
 
 export const routeTree = rootRoute
@@ -117,7 +166,9 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/posts/$postId",
-        "/posts/"
+        "/store/$",
+        "/posts/",
+        "/store/products/$"
       ]
     },
     "/": {
@@ -126,8 +177,14 @@ export const routeTree = rootRoute
     "/posts/$postId": {
       "filePath": "posts.$postId.tsx"
     },
+    "/store/$": {
+      "filePath": "store/$.tsx"
+    },
     "/posts/": {
       "filePath": "posts.index.tsx"
+    },
+    "/store/products/$": {
+      "filePath": "store/products/$.tsx"
     }
   }
 }
